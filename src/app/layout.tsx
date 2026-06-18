@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import ThemeProvider from '@/components/ThemeProvider';
 import QueryProvider from '@/components/QueryProvider';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: {
@@ -112,6 +113,7 @@ export default function RootLayout({
             </LanguageProvider>
           </QueryProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

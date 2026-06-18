@@ -131,4 +131,6 @@ export interface GalleryImage {
   category: string;
   width: number;
   height: number;
+  photographer?: string;
+  color?: string;
 }

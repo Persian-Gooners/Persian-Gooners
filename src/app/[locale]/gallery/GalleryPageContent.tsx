@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import GalleryGrid from '@/components/GalleryGrid';
-import { galleryImages } from '@/data/gallery';
+import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function GalleryPageContent() {
   const { locale } = useLanguage();
   const { t } = useTranslation();
+  const { images, loading } = useGalleryImages();
 
   return (
     <div className="pt-20">
@@ -28,7 +28,13 @@ export default function GalleryPageContent() {
 
       <section className="py-12 bg-white dark:bg-arsenal-darkerGray">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <GalleryGrid images={galleryImages} />
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-arsenal-red"></div>
+            </div>
+          ) : (
+            <GalleryGrid images={images} />
+          )}
         </div>
       </section>
     </div>

@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Calendar, Tag, User, ArrowRight } from 'lucide-react';
+import { Calendar, Tag, User } from 'lucide-react';
 import { NewsArticle } from '@/lib/types';
 
 interface NewsCardProps {
@@ -20,18 +19,14 @@ export default function NewsCard({ article, featured = false, index = 0 }: NewsC
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className={`group ${featured ? 'col-span-full' : ''}`}
     >
-      <Link href={`/news/${article.slug}`}>
-        <div className={`glass-card-hover overflow-hidden ${featured ? 'md:flex' : ''}`}>
+      <div className={`glass-card-hover overflow-hidden ${featured ? 'md:flex' : ''}`}>
           <div className={`relative overflow-hidden ${featured ? 'md:w-1/2' : ''}`}>
-            <div
-              className={`bg-gradient-to-br from-arsenal-red/20 to-arsenal-navy/20 ${
-                featured ? 'h-64 md:h-96' : 'h-48'
-              }`}
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-arsenal-red/40 text-6xl font-bold">PG</span>
-              </div>
-            </div>
+            <img
+              src={article.image}
+              alt={article.title}
+              className={`w-full object-cover ${featured ? 'h-64 md:h-96' : 'h-48'}`}
+              loading="lazy"
+            />
             <div className="absolute top-4 left-4">
               <span className="px-3 py-1 bg-arsenal-red text-white text-xs font-semibold rounded-full">
                 {article.category}
@@ -86,13 +81,11 @@ export default function NewsCard({ article, featured = false, index = 0 }: NewsC
               ))}
             </div>
 
-            <div className="flex items-center text-arsenal-red font-medium group-hover:space-x-2 transition-all">
+            <div className="flex items-center text-arsenal-red font-medium">
               <span>Read More</span>
-              <ArrowRight className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" />
             </div>
           </div>
         </div>
-      </Link>
     </motion.article>
   );
 }

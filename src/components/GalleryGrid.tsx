@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { galleryCategories } from '@/data/gallery';
 import { GalleryImage } from '@/lib/types';
-import { Expand, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Expand, X, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
+import Image from 'next/image';
 
 interface GalleryGridProps {
   images: GalleryImage[];
@@ -66,12 +67,12 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
               className="group relative overflow-hidden rounded-2xl cursor-pointer"
               onClick={() => openLightbox(image)}
             >
-              <div
-                className="bg-gradient-to-br from-arsenal-red/20 to-arsenal-navy/20 flex items-center justify-center"
-                style={{ height: image.height * 0.5 }}
-              >
-                <span className="text-arsenal-red/40 text-4xl font-bold">{image.category}</span>
-              </div>
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-2">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -82,6 +83,12 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
               <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                 <p className="text-white text-sm font-medium">{image.alt}</p>
                 <p className="text-white/60 text-xs">{image.category}</p>
+                {image.photographer && (
+                  <p className="text-white/40 text-xs flex items-center gap-1 mt-1">
+                    <Camera className="w-3 h-3" />
+                    {image.photographer}
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>
@@ -128,20 +135,22 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
               className="max-w-4xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-gradient-to-br from-arsenal-red/30 to-arsenal-navy/30 rounded-2xl overflow-hidden">
-                <div
-                  className="flex items-center justify-center"
-                  style={{ height: '60vh' }}
-                >
-                  <div className="text-center">
-                    <span className="text-white/30 text-6xl font-bold">{selectedImage.category}</span>
-                    <p className="text-white/60 text-xl mt-4">{selectedImage.alt}</p>
-                  </div>
-                </div>
+              <div className="rounded-2xl overflow-hidden bg-black">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full max-h-[70vh] object-contain"
+                />
               </div>
               <div className="text-center mt-4">
                 <p className="text-white text-lg">{selectedImage.alt}</p>
-                <p className="text-white/50 text-sm">{selectedImage.category} · {selectedIndex + 1} of {filteredImages.length}</p>
+                {selectedImage.photographer && (
+                  <p className="text-white/50 text-sm flex items-center justify-center gap-1 mt-1">
+                    <Camera className="w-4 h-4" />
+                    Photo by {selectedImage.photographer} on Unsplash
+                  </p>
+                )}
+                <p className="text-white/40 text-sm mt-2">{selectedImage.category} · {selectedIndex + 1} of {filteredImages.length}</p>
               </div>
             </motion.div>
           </motion.div>
